@@ -9,7 +9,7 @@
 #define MUL 3
 #define DIV 4
 
-
+// https://stackoverflow.com/questions/8437791/c-malloc-array-in-function-and-then-access-array-from-outside
 // int * read_operation(){
 // [operation, index1, index2]
 // };
@@ -41,38 +41,112 @@ float read_float(){
 
     return number;
 }
-void read_stdin(float ** numbers, float ** operations){
-    char line_buffer[BUFFER_SIZE];
+
+int op2int(char op){
+    int ret;
+    switch (op){
+        case '+':
+            ret = ADD;
+        break;
+
+        case '-':
+            ret = SUB;
+        break;
+
+        case '/':
+            ret = DIV;
+        break;
+
+        case '*':
+            ret = MUL;
+        break;
+    }
+
+    return ret;
+}
+
+//op = [result_position, index_n1, operation, index_n2]
+int * read_operation(){
+    int * op = malloc(sizeof(int)*4);
+    char buffer[BUFFER_SIZE];
+    char * token;
+    int index = 0;
+
+    if(fgets(buffer, BUFFER_SIZE, stdin) == NULL){
+        printf("Error to catch a line\n");
+    }
+    else{
+        token = strtok(buffer, " ");
+        while(token != NULL){
+            if(token[0] != '='){
+
+                //case we are reading a number
+                if(token[0] == 'x'){
+                    op[index] = (int) token[1] - '0';
+                }
+                //we are reading a operation
+                else{
+                    //transform the operation simbol to an int
+                    op[index] = op2int(token[0]);
+                }
+                index++;
+            }
+
+            token = strtok(NULL, " ");
+        }
+
+    }
+    return op;
+}
+
+void read_stdin(float ** numbers, int *** operations, int * size_numbers, int * size_operations ){
 
     //read the first line to know how many numbers and operations we will read
-    int size_numbers, size_operations;
-    scanf("%d", &size_numbers);
-    scanf("%d", &size_operations);
+    // int size_numbers, size_operations;
+    scanf("%d", size_numbers);
+    scanf("%d", size_operations);
 
-    printf("size_numbers: %d\n", size_numbers);
-    printf("size_operations: %d\n", size_operations);
+    printf("size_numbers: %d\n", *size_numbers);
+    printf("size_operations: %d\n", *size_operations);
 
     //a wild getchat to give us time
     getchar();
 
-    *numbers = malloc(sizeof(float) * size_numbers);
-    *operations = malloc(sizeof(float) * size_operations);
+    *numbers = malloc(sizeof(float) * (*size_numbers));
+    *operations = malloc(sizeof(float) * (*size_operations));
 
     //read all the numbers
-    for(int i=0; i<size_numbers; i++){
+    for(int i=0; i< *size_numbers; i++){
         (*numbers)[i] = read_float();
-        printf("%f\n", *numbers[i]);
+        printf("(*numbers)[%i]: %f\n", i, (*numbers)[i]);
     }
 
-    // for(int i=0; i<size_operations; i++){
-    //     (*operations)[i] = read_operation();
-    // }
+    //read all the operations
+    for(int i=0; i< *size_operations; i++){
+        (*operations)[i] = malloc(sizeof(int) * 4);
+        (*operations)[i] = read_operation();
+        for(int j=0; j< 4; j++){
+            printf("read_stdin - (*operations)[%i]: %i\n", i, (*operations)[i][j]);
+        }
+    }
 }
 
 int main(){
-    float * numbers, * operations;
+    float * numbers;    //[1.54, 2.2, 3.21]
+    int ** operations;  //[[0,2,1]] num[op[0][0]]
+    int size_numbers, size_operations;
 
-    read_stdin(&numbers, &operations);
+    read_stdin(&numbers, &operations, &size_numbers, &size_operations);
+
+    for(int i=0; i<size_numbers; i++){
+        printf("main - numbers[%i]: %f\n", i, numbers[i]);
+    }
+
+    for(int i=0; i<size_operations; i++){
+        for(int j=0; j<4; j++){
+            printf("main - operations[%i][%i]: %i\n", i, j, operations[i][j]);
+        }
+    }
 
     free(numbers);
     free(operations);
