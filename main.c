@@ -13,13 +13,7 @@ int main(){
         printf("main - numbers[%i]: %f\n", i, numbers[i]);
     }
 
-    for(int i=0; i<size_operations; i++){
-        printf("main - operations[%i]:\n", i);
-        printf("num1: %f\n", operations[i].num1);
-        printf("num2: %f\n", operations[i].num2);
-        printf("result_idx: %i\n", operations[i].result_idx);
-        printf("operation: %i\n", operations[i].op);
-    }
+    print_operations(operations, size_operations);
 
     free(numbers);
     free(operations);
