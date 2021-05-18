@@ -111,6 +111,12 @@ int * read_operation(){
     return op;
 }
 
+void print_operations(struct Operation * ops, int size_ops){
+    for(int i=0; i< size_ops; i++){
+        printf("operation[%i]: num1: %f - num2: %f - op:%i - result:%i\n", i, ops[i].num1, ops[i].num2, ops[i].op, ops[i].result_idx);
+    }
+}
+
 void read_stdin(float ** numbers, struct Operation ** operations, int * size_numbers, int * size_operations ){
 
     //read the first line to know how many numbers and operations we will read
