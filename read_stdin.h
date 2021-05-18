@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include "FloatType.h"
 
 #define BUFFER_SIZE 100
 
@@ -9,24 +10,24 @@
 #define DIV 4
 
 struct Operation{
-    float num1;
-    float num2;
+    Float_t num1;
+    Float_t num2;
     int op;
     int result_idx;
 };
 
 struct Operation init_operation(){
     struct Operation new_op;
-    new_op.num1 = 0.0;
-    new_op.num2 = 0.0;
+    new_op.num1.f = 0.0;
+    new_op.num2.f = 0.0;
     new_op.op = 0;
     new_op.result_idx = 0;
 
     return new_op;
 };
 
-float read_float(){
-    float number;
+Float_t read_float(){
+    Float_t number;
     int count;
     char * token;
     char buffer[BUFFER_SIZE];
@@ -42,7 +43,7 @@ float read_float(){
             if(count){
                 //remove the \n and get a float number
                 token = strtok(token, "\n");
-                number = atof(token);
+                number.f = atof(token);
             }
             count++;
 
@@ -90,11 +91,9 @@ int * read_operation(){
         token = strtok(buffer, " ");
         while(token != NULL){
             if(token[0] != '='){
-
                 //case we are reading a number
                 if(token[0] == 'x'){
                     op[index] = ((int) token[1] - '0') - 1;
-
                 }
                 //we are reading a operation
                 else{
@@ -113,11 +112,22 @@ int * read_operation(){
 
 void print_operations(struct Operation * ops, int size_ops){
     for(int i=0; i< size_ops; i++){
-        printf("operation[%i]: num1: %f - num2: %f - op:%i - result:%i\n", i, ops[i].num1, ops[i].num2, ops[i].op, ops[i].result_idx);
+        printf("operation[%i]:\n - num1: ", i);
+        printFloat_t(ops[i].num1);
+        printf(" - num2:");
+        printFloat_t(ops[i].num2);
+        printf(" - op:%i - result:%i\n\n", ops[i].op, ops[i].result_idx);
     }
 }
 
-void read_stdin(float ** numbers, struct Operation ** operations, int * size_numbers, int * size_operations ){
+void print_numbers(Float_t * numbers, int size_numbers){
+    for(int i=0; i < size_numbers; i++){
+        printf("numbers[%i]: ",i);
+        printFloat_t(numbers[i]);
+    }
+}
+
+void read_stdin(Float_t ** numbers, struct Operation ** operations, int * size_numbers, int * size_operations ){
 
     //read the first line to know how many numbers and operations we will read
     // int size_numbers, size_operations;
@@ -130,13 +140,14 @@ void read_stdin(float ** numbers, struct Operation ** operations, int * size_num
     //a wild getchat to give us time
     getchar();
 
-    *numbers = malloc(sizeof(float) * (*size_numbers));
+    *numbers = malloc(sizeof(Float_t) * (*size_numbers));
     *operations = malloc(sizeof(struct Operation) * (*size_operations));
 
     //read all the numbers
     for(int i=0; i< *size_numbers; i++){
         (*numbers)[i] = read_float();
-        printf("(*numbers)[%i]: %f\n", i, (*numbers)[i]);
+        printf("(*numbers)[%i]: ", i);
+        printFloat_t((*numbers)[i]);
     }
 
     int * op_vector;
