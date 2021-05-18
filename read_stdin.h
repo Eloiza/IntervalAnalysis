@@ -8,6 +8,23 @@
 #define MUL 3
 #define DIV 4
 
+struct Operation{
+    float num1;
+    float num2;
+    int op;
+    int result_idx;
+};
+
+struct Operation init_operation(){
+    struct Operation new_op;
+    new_op.num1 = 0.0;
+    new_op.num2 = 0.0;
+    new_op.op = 0;
+    new_op.result_idx = 0;
+
+    return new_op;
+};
+
 float read_float(){
     float number;
     int count;
@@ -76,7 +93,8 @@ int * read_operation(){
 
                 //case we are reading a number
                 if(token[0] == 'x'){
-                    op[index] = (int) token[1] - '0';
+                    op[index] = ((int) token[1] - '0') - 1;
+
                 }
                 //we are reading a operation
                 else{
@@ -93,7 +111,13 @@ int * read_operation(){
     return op;
 }
 
-void read_stdin(float ** numbers, int *** operations, int * size_numbers, int * size_operations ){
+void print_operations(struct Operation * ops, int size_ops){
+    for(int i=0; i< size_ops; i++){
+        printf("operation[%i]: num1: %f - num2: %f - op:%i - result:%i\n", i, ops[i].num1, ops[i].num2, ops[i].op, ops[i].result_idx);
+    }
+}
+
+void read_stdin(float ** numbers, struct Operation ** operations, int * size_numbers, int * size_operations ){
 
     //read the first line to know how many numbers and operations we will read
     // int size_numbers, size_operations;
@@ -107,7 +131,7 @@ void read_stdin(float ** numbers, int *** operations, int * size_numbers, int * 
     getchar();
 
     *numbers = malloc(sizeof(float) * (*size_numbers));
-    *operations = malloc(sizeof(float) * (*size_operations));
+    *operations = malloc(sizeof(struct Operation) * (*size_operations));
 
     //read all the numbers
     for(int i=0; i< *size_numbers; i++){
@@ -115,12 +139,17 @@ void read_stdin(float ** numbers, int *** operations, int * size_numbers, int * 
         printf("(*numbers)[%i]: %f\n", i, (*numbers)[i]);
     }
 
+    int * op_vector;
     //read all the operations
     for(int i=0; i< *size_operations; i++){
-        (*operations)[i] = malloc(sizeof(int) * 4);
-        (*operations)[i] = read_operation();
-        for(int j=0; j< 4; j++){
-            printf("read_stdin - (*operations)[%i]: %i\n", i, (*operations)[i][j]);
-        }
+        // (*operations)[i] = malloc(sizeof(int) * 4);
+        op_vector = read_operation();
+
+        (*operations)[i] = init_operation();
+
+        (*operations)[i].num1 = (*numbers)[op_vector[1]];
+        (*operations)[i].num2 = (*numbers)[op_vector[3]];
+        (*operations)[i].result_idx = op_vector[0] + 1;
+        (*operations)[i].op = op_vector[1];
     }
 }

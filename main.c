@@ -4,7 +4,7 @@
 
 int main(){
     float * numbers;    //[1.54, 2.2, 3.21]
-    int ** operations;  //[[0,2,1,1]] num[op[0][0]]
+    struct Operation * operations;  //[[0,2,1,1]] num[op[0][0]]
     int size_numbers, size_operations;
 
     read_stdin(&numbers, &operations, &size_numbers, &size_operations);
@@ -14,9 +14,11 @@ int main(){
     }
 
     for(int i=0; i<size_operations; i++){
-        for(int j=0; j<4; j++){
-            printf("main - operations[%i][%i]: %i\n", i, j, operations[i][j]);
-        }
+        printf("main - operations[%i]:\n", i);
+        printf("num1: %f\n", operations[i].num1);
+        printf("num2: %f\n", operations[i].num2);
+        printf("result_idx: %i\n", operations[i].result_idx);
+        printf("operation: %i\n", operations[i].op);
     }
 
     free(numbers);
