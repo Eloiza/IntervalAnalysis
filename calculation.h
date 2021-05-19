@@ -3,26 +3,42 @@ struct Interval{
     Float_t max;
 };
 
-struct Interval find_interval(Float_t num){
-    struct Interval interval;
+Float_t min(Float_t num){
+    Float_t min = num;
+    min.parts.mantissa--;
 
-    // num.parts.exponent
-    // num.parts.sign
+    return min;
+}
 
-    interval.min = num;
-    interval.min.parts.mantissa--;
+Float_t max(Float_t num){
+    Float_t max = num;
+    max.parts.mantissa++;
 
-    interval.max = num;
-    interval.max.parts.mantissa++;
+    return max;
+}
 
-    return interval;
+void calculate_intervals(struct Interval ** inter, Float_t * numbers, int size_numbers){
+    int i, j=0;
+    for(i=0; i< size_numbers; i++){
+        (*inter)[j].min = min(numbers[i]);
+        (*inter)[j].max = max(numbers[i]);
+        j++;
+    }
 }
 
 void print_interval(struct Interval interval){
-    printf("min: ");
+    printf("\tmin: ");
     printFloat_t(interval.min);
 
-    printf("max: ");
+    printf("\tmax: ");
     printFloat_t(interval.max);
+}
 
+void print_intervals(struct Interval * inters, int size_inters){
+    int i = 0;
+    for(i=0; i< size_inters; i++){
+        printf("interval[%i]:\n", i);
+        print_interval(inters[i]);
+        printf("\n");
+    }
 }

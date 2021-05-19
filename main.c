@@ -17,15 +17,17 @@ int main(){
 
     print_operations(operations, size_operations);
 
-    struct Interval inter_num1 = find_interval(numbers[0]);
-    struct Interval inter_num2 = find_interval(numbers[1]);
+    //create a vector to store all the intervals we gonna need
+    int size_intervals = size_numbers + size_operations;
+    struct Interval * result_intervals = malloc(sizeof(struct Interval) * (size_intervals));
 
-    print_interval(inter_num1);
-    printf("\n");
-    print_interval(inter_num2);
+    calculate_intervals(&result_intervals, numbers, size_numbers);
+    print_intervals(result_intervals, size_numbers);
+    //calculate the operations with the intervals
 
     free(numbers);
     free(operations);
+    free(result_intervals);
 
     return 0;
 }

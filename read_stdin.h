@@ -10,16 +10,16 @@
 #define DIV 4
 
 struct Operation{
-    Float_t num1;
-    Float_t num2;
-    int op;
-    int result_idx;
+    int num1;   //index first number in operation
+    int num2;   //index second number in operation
+    int op;     //operation type
+    int result_idx; //index to store the operation result
 };
 
 struct Operation init_operation(){
     struct Operation new_op;
-    new_op.num1.f = 0.0;
-    new_op.num2.f = 0.0;
+    new_op.num1 = 0;
+    new_op.num2 = 0;
     new_op.op = 0;
     new_op.result_idx = 0;
 
@@ -108,15 +108,11 @@ int * read_operation(){
 
     }
     return op;
-}
+};
 
 void print_operations(struct Operation * ops, int size_ops){
     for(int i=0; i< size_ops; i++){
-        printf("operation[%i]:\n - num1: ", i);
-        printFloat_t(ops[i].num1);
-        printf(" - num2: ");
-        printFloat_t(ops[i].num2);
-        printf(" - op:%i - result:%i\n\n", ops[i].op, ops[i].result_idx);
+        printf("operation[%i]:\n\tnum1: %i - num2: %i - op: %i - result:%i\n\n", i, ops[i].num1, ops[i].num2, ops[i].op, ops[i].result_idx);
     }
 }
 
@@ -153,14 +149,12 @@ void read_stdin(Float_t ** numbers, struct Operation ** operations, int * size_n
     int * op_vector;
     //read all the operations
     for(int i=0; i< *size_operations; i++){
-        // (*operations)[i] = malloc(sizeof(int) * 4);
         op_vector = read_operation();
 
         (*operations)[i] = init_operation();
-
-        (*operations)[i].num1 = (*numbers)[op_vector[1]];
-        (*operations)[i].num2 = (*numbers)[op_vector[3]];
-        (*operations)[i].result_idx = op_vector[0] + 1;
+        (*operations)[i].num1 = op_vector[1];   //stores the index of the 1st number
+        (*operations)[i].num2 = op_vector[3];
+        (*operations)[i].result_idx = op_vector[0];
         (*operations)[i].op = op_vector[1];
     }
 }
