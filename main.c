@@ -17,6 +17,13 @@ int main(){
 
     print_operations(operations, size_operations);
 
+    struct Interval inter_num1 = find_interval(numbers[0]);
+    struct Interval inter_num2 = find_interval(numbers[1]);
+
+    print_interval(inter_num1);
+    printf("\n");
+    print_interval(inter_num2);
+
     free(numbers);
     free(operations);
 

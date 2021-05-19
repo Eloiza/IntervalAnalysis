@@ -114,7 +114,7 @@ void print_operations(struct Operation * ops, int size_ops){
     for(int i=0; i< size_ops; i++){
         printf("operation[%i]:\n - num1: ", i);
         printFloat_t(ops[i].num1);
-        printf(" - num2:");
+        printf(" - num2: ");
         printFloat_t(ops[i].num2);
         printf(" - op:%i - result:%i\n\n", ops[i].op, ops[i].result_idx);
     }
