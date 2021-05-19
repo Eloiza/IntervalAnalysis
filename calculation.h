@@ -27,17 +27,17 @@ void calculate_intervals(struct Interval ** inter, Float_t * numbers, int size_n
 }
 
 void print_interval(struct Interval interval){
-    printf("\tmin: ");
-    printFloat_t(interval.min);
+    printf("\t[ %1.8e , %1.8e]", interval.min.f, interval.max.f);
+    // printFloat_t(interval.min);
 
-    printf("\tmax: ");
-    printFloat_t(interval.max);
+    // printf("\tmax: %.8f", interval.max.f);
+    // printFloat_t(interval.max);
 }
 
 void print_intervals(struct Interval * inters, int size_inters){
     int i = 0;
     for(i=0; i< size_inters; i++){
-        printf("interval[%i]:\n", i);
+        printf("X%i:", (i+1) );
         print_interval(inters[i]);
         printf("\n");
     }
