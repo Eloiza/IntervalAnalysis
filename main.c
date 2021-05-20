@@ -23,8 +23,13 @@ int main(){
 
     calculate_intervals(&result_intervals, numbers, size_numbers);
     print_intervals(result_intervals, size_numbers);
+    printf("\n");
+    
     //calculate the operations with the intervals
+    solve_operations(&result_intervals, operations, size_operations);
+    print_intervals(result_intervals, size_intervals);
 
+    //free the memory used in the vectors
     free(numbers);
     free(operations);
     free(result_intervals);

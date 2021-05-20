@@ -155,6 +155,6 @@ void read_stdin(Float_t ** numbers, struct Operation ** operations, int * size_n
         (*operations)[i].num1 = op_vector[1];   //stores the index of the 1st number
         (*operations)[i].num2 = op_vector[3];
         (*operations)[i].result_idx = op_vector[0];
-        (*operations)[i].op = op_vector[1];
+        (*operations)[i].op = op_vector[2];
     }
 }
