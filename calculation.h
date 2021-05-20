@@ -6,13 +6,21 @@ struct Interval{
 
 Float_t min(Float_t num){
     Float_t min = num;
-
-    //case negative number
     if(min.parts.sign){
-        min.parts.mantissa++;
+        // min.parts.mantissa++;
+        min.i++;
+    }
+    else{
+        // printf("MIN Antes:\n");
+        // printFloat_t(min);
+        // printf("Mantissa: %i\n", min.parts.mantissa);
+        // min.parts.mantissa--;
 
-    }else{
-        min.parts.mantissa--;
+        min.i--;
+        // printf("MIN Depois:\n");
+        // printFloat_t(min);
+        // printf("Mantissa: %i\n", min.parts.mantissa);
+
     }
 
     return min;
@@ -20,13 +28,19 @@ Float_t min(Float_t num){
 
 Float_t max(Float_t num){
     Float_t max = num;
-
-    //case negative number
     if(max.parts.sign){
-        max.parts.mantissa--;
+        // max.parts.mantissa--;
+        max.i--;
+    }
+    else{
+        // printf("MAX Antes:\n");
+        // printFloat_t(max);
 
-    }else{
-        max.parts.mantissa++;
+        // max.parts.mantissa++;
+        max.i++;
+        // printf("MAX Depois:\n");
+        // printFloat_t(max);
+
     }
 
     return max;
@@ -36,7 +50,20 @@ void calculate_intervals(struct Interval ** inter, Float_t * numbers, int size_n
     int i, j=0;
     for(i=0; i< size_numbers; i++){
         (*inter)[j].min = min(numbers[i]);
+        // printf("numbers[%i]: %f\n",i,numbers[i].f);
+        //check if the number calculated is Nan
+        if(isnan((*inter)[j].min.f)){
+            // printf("Min is nan for: %f\n", numbers[i].f);
+            (*inter)[j].min = numbers[i];
+        }
+
         (*inter)[j].max = max(numbers[i]);
+
+        if(isnan((*inter)[j].max.f)){
+            // printf("Max is nan for: %f\n", numbers[i].f);
+            (*inter)[j].max = numbers[i];
+        }
+
         j++;
     }
 }
@@ -61,9 +88,10 @@ void print_intervals(struct Interval * inters, int size_inters){
 void print_non_unitary(struct Interval * inters, int size_inters, int size_operations){
     printf("Não unitários:\n");
     int i;
-    int start = size_inters - size_operations;
+    int start = (size_inters - size_operations);
     for(i = start; i<size_inters; i++){
         if(!inters[i].uni){
+            printf("X%i = ", (i+1) );
             print_interval(inters[i]);
             printf("\n");
         }
@@ -96,10 +124,10 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
             //calculate min and max
             case ADD:
                 result.f = num1.min.f + num2.min.f;
-                (*intervals)[index].min = result;
+                (*intervals)[index].min = min(result);
 
                 result.f = num1.max.f + num2.max.f;
-                (*intervals)[index].max = result;
+                (*intervals)[index].max = max(result);
 
                 //check if the interval is unitary
                 (*intervals)[index].uni = is_unitary((*intervals)[index]);
@@ -132,10 +160,10 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
             //calculate min and max
             case MUL:
                 result.f = num1.min.f * num2.min.f;
-                (*intervals)[index].min = result;
+                (*intervals)[index].min = min(result);
 
                 result.f = num1.max.f * num2.max.f;
-                (*intervals)[index].max =  result;
+                (*intervals)[index].max =  max(result);
 
                 //check if the interval is unitary
                 (*intervals)[index].uni = is_unitary((*intervals)[index]);
