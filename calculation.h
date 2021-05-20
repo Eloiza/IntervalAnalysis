@@ -42,7 +42,7 @@ void calculate_intervals(struct Interval ** inter, Float_t * numbers, int size_n
 }
 
 void print_interval(struct Interval interval){
-    printf("[\t%1.8e,\t%1.8e]", interval.min.f, interval.max.f);
+    printf("[ \t %1.8e,\t %1.8e]", interval.min.f, interval.max.f);
     // printFloat_t(interval.min);
 
     // printf("\tmax: %.8f", interval.max.f);
@@ -56,9 +56,13 @@ void print_intervals(struct Interval * inters, int size_inters){
         print_interval(inters[i]);
         printf("\n");
     }
+}
 
+void print_non_unitary(struct Interval * inters, int size_inters, int size_operations){
     printf("Não unitários:\n");
-    for(i=0; i<size_inters; i++){
+    int i;
+    int start = size_inters - size_operations;
+    for(i = start; i<size_inters; i++){
         if(!inters[i].uni){
             print_interval(inters[i]);
             printf("\n");

@@ -23,6 +23,8 @@ int main(){
     //calculate the operations with the intervals
     solve_operations(&result_intervals, operations, size_operations);
     print_intervals(result_intervals, size_intervals);
+    printf("\n");
+    print_non_unitary(result_intervals, size_intervals, size_operations);
 
     //free the memory used in the vectors
     free(numbers);
