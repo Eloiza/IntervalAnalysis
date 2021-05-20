@@ -1,6 +1,7 @@
 struct Interval{
-    Float_t min;
-    Float_t max;
+    Float_t min;   //interval min
+    Float_t max;   //interval max
+    int uni;   //bool to check if is unitary interval
 };
 
 Float_t min(Float_t num){
@@ -9,8 +10,8 @@ Float_t min(Float_t num){
     //case negative number
     if(min.parts.sign){
         min.parts.mantissa++;
-    }
-    else{
+
+    }else{
         min.parts.mantissa--;
     }
 
@@ -23,6 +24,7 @@ Float_t max(Float_t num){
     //case negative number
     if(max.parts.sign){
         max.parts.mantissa--;
+
     }else{
         max.parts.mantissa++;
     }
@@ -40,7 +42,7 @@ void calculate_intervals(struct Interval ** inter, Float_t * numbers, int size_n
 }
 
 void print_interval(struct Interval interval){
-    printf("\t[ %1.8e , %1.8e]", interval.min.f, interval.max.f);
+    printf("[\t%1.8e,\t%1.8e]", interval.min.f, interval.max.f);
     // printFloat_t(interval.min);
 
     // printf("\tmax: %.8f", interval.max.f);
@@ -50,10 +52,29 @@ void print_interval(struct Interval interval){
 void print_intervals(struct Interval * inters, int size_inters){
     int i = 0;
     for(i=0; i< size_inters; i++){
-        printf("X%i:", (i+1) );
+        printf("X%i = ", (i+1) );
         print_interval(inters[i]);
         printf("\n");
     }
+
+    printf("Não unitários:\n");
+    for(i=0; i<size_inters; i++){
+        if(!inters[i].uni){
+            print_interval(inters[i]);
+            printf("\n");
+        }
+    }
+}
+
+//check if a interval is unitary
+//a interval is unitary if both numbers are the same
+int is_unitary(struct Interval inter){
+    //check if the numbers are equal
+    if(AlmostEqualRelative(inter.min, inter.max)){
+        return 1;
+    }
+
+    return 0;
 }
 
 void solve_operations(struct Interval ** intervals, struct Operation * operations, int size_operations){
@@ -67,16 +88,17 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
 
         //stores the index to store the operation result
         index = operations[i].result_idx;
-        printf("solve_operations - operation[%i]: %i\n", i, operations[i].op);
         switch (operations[i].op) {
             //calculate min and max
             case ADD:
                 result.f = num1.min.f + num2.min.f;
-                printf("ADD RESULT: %1.8e\n", result.f);
                 (*intervals)[index].min = result;
 
                 result.f = num1.max.f + num2.max.f;
                 (*intervals)[index].max = result;
+
+                //check if the interval is unitary
+                (*intervals)[index].uni = is_unitary((*intervals)[index]);
                 break;
 
             //calculate min and max
@@ -86,6 +108,9 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
 
                 result.f = num1.max.f - num2.max.f;
                 (*intervals)[index].max = max(result);
+
+                //check if the interval is unitary
+                (*intervals)[index].uni = is_unitary((*intervals)[index]);
                 break;
 
             //calculate min and max
@@ -95,6 +120,9 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
 
                 result.f = num1.max.f / num2.max.f;
                 (*intervals)[index].max =  max(result);
+
+                //check if the interval is unitary
+                (*intervals)[index].uni = is_unitary((*intervals)[index]);
                 break;
 
             //calculate min and max
@@ -104,8 +132,11 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
 
                 result.f = num1.max.f * num2.max.f;
                 (*intervals)[index].max =  result;
+
+                //check if the interval is unitary
+                (*intervals)[index].uni = is_unitary((*intervals)[index]);
                 break;
 
-        }
+        } //end switch
     }
 }

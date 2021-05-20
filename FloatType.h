@@ -57,11 +57,11 @@ int AlmostEqualRelative(Float_t A, Float_t B)
     largest.f = (B.f > A.f) ? B.f : A.f;
     relEpsilon.f = largest.f * FLT_EPSILON;
 
-    printf("\tThe difference: ");
-    printFloat_t(diff);
+    // printf("\tThe difference: ");
+    // printFloat_t(diff);
 
-    printf("\trel. Epsilon:   ");
-    printFloat_t(relEpsilon);
+    // printf("\trel. Epsilon:   ");
+    // printFloat_t(relEpsilon);
 
     if (diff.f <= relEpsilon.f)
         return 1;

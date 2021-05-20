@@ -130,8 +130,8 @@ void read_stdin(Float_t ** numbers, struct Operation ** operations, int * size_n
     scanf("%d", size_numbers);
     scanf("%d", size_operations);
 
-    printf("size_numbers: %d\n", *size_numbers);
-    printf("size_operations: %d\n", *size_operations);
+    // printf("size_numbers: %d\n", *size_numbers);
+    // printf("size_operations: %d\n", *size_operations);
 
     //a wild getchat to give us time
     getchar();
@@ -142,8 +142,8 @@ void read_stdin(Float_t ** numbers, struct Operation ** operations, int * size_n
     //read all the numbers
     for(int i=0; i< *size_numbers; i++){
         (*numbers)[i] = read_float();
-        printf("(*numbers)[%i]: ", i);
-        printFloat_t((*numbers)[i]);
+        // printf("(*numbers)[%i]: ", i);
+        // printFloat_t((*numbers)[i]);
     }
 
     int * op_vector;
