@@ -147,6 +147,17 @@ void solve_operations(struct Interval ** intervals, struct Operation * operation
 
             //calculate min and max
             case DIV:
+                //case division by 0
+                // printf("num2.min.parts.exponent %i\n", num2.min.parts.exponent);
+                if(num2.min.parts.exponent <= 0 && (num2.min.parts.mantissa == 0 ||  num2.min.parts.mantissa == 1)){
+                    //make both numbers be infinit
+                    (*intervals)[index].min.parts.exponent =  255;
+                    (*intervals)[index].max.parts.exponent =  255;
+
+                    (*intervals)[index].min.parts.mantissa =  0;
+                    (*intervals)[index].max.parts.mantissa =  0;
+                    break;
+                }
                 result.f = num1.min.f / num2.min.f;
                 (*intervals)[index].min =  min(result);
 
